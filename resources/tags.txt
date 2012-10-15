@@ -1,0 +1,8 @@
+event=type
+event:start_datetime
+event:end_datetime
+# event:involving_objects:relation?
+event:organizations
+event:number_of_participants
+event:pattern = .. #check how event calendars handle this
+event:comment

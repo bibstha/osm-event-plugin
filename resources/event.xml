@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<presets xmlns="http://josm.openstreetmap.de/tagging-preset-1.0">
+	<item name="Event"
+		icon="http://maya.bibek.com.np/josm/event_editor/event_icon.png" type="node,way">
+		<label text="Edit Event" />
+		<space />
+		<key key="event" value="yes"/>
+		<combo key="event:type" text="Event Type"
+			values="sports,social,traffic,transportation,toursitic" />
+		<text key="name" text="Name" />
+		<label text="Please enter dates in MM/YY/DDDD format. In case of time enter in MM/YY/DDDDThh:mm:ss format." />
+		<text key="event:start_date" text="Start Date" />
+		<text key="event:end_date" text="End Date" />
+		<text key="event:organization" text="Organization" />
+		<combo key="event:number_of_participants" text="Number of Participants" 
+			values="less than 10, 10 to 50, 50 to 200, 200 to 1000, more than 1000"/>
+		<combo key="event:repeats" text="How often"
+			values="yearly,monthly,bimonthly,weekly" />
+		<text key="event:comment" text="Comment" />
+	</item>
+</presets>
