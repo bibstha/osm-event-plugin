@@ -40,6 +40,8 @@ public class EventEditorPlugin extends Plugin{
 				}
 				EventUploadReview reviewer = new EventUploadReview();
 				reviewer.showReview(apiDataSet);
+				
+				System.out.println(apiDataSet.getSize());
 				return false;
 			}
 		});
@@ -75,14 +77,13 @@ public class EventEditorPlugin extends Plugin{
 			
 			JButton btnClose = new JButton("Close");
 			btnClose.addActionListener(new ActionListener() {
-				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					dialog.setVisible(false);
 				}
 			});
 			
-			dialog.add(btnUpload, BorderLayout.LINE_END);
+			dialog.add(btnUpload, BorderLayout.CENTER);
 			dialog.add(btnClose, BorderLayout.LINE_END);
 			
 			dialog.pack();

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://josm.openstreetmap.de/mappaint-style-1.0"
+       name="standard" icon="dialogs/mappaint/josm_small.png">
+    <rule>
+		<condition k="event" b="yes"/>
+		<area colour="red#e0b177"/>
+		<icon annotate="true" src="http://maya.bibek.com.np/josm/event_editor/event_icon_14x14.png"/>
+	</rule>
+</rules>
