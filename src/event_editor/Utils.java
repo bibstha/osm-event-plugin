@@ -11,8 +11,7 @@ import org.openstreetmap.josm.data.osm.OsmPrimitive;
 
 public class Utils
 {
-    protected static Pattern EVENT_NUMBER_PATTERN = Pattern
-	    .compile("event:([0-9]+):(.*)");
+    protected static Pattern EVENT_NUMBER_PATTERN = Pattern.compile("event:([0-9]+):(.*)");
 
     public static EventPrimitive createEventPrimitive(OsmPrimitive primitive)
     {
@@ -57,13 +56,7 @@ public class Utils
 		eventEntity.setComment(tagValue);
 	    }
 
-	    // if (!eventTags.containsKey(key)) {
-	    // eventTags.put(key, tags.get(key));
-	    // }
-	    //
-	    // System.out.println("Saved tag " + key + "for event number : "
-	    // + eventNumber);
-
+	    System.out.println("Saved tag " + key + "for event number : " + eventNumber);
 	}
 	return selPrimitive;
     }

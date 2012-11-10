@@ -11,15 +11,17 @@ import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.Way;
 
 @SuppressWarnings("serial")
-public class EventPresetEditAction extends JosmAction {
+public class EventPresetEditAction extends JosmAction
+{
 
-    public EventPresetEditAction() {
-	super(tr("Event Add/Edit"), null,
-		tr("Add or edit events related with the node"), null, true);
+    public EventPresetEditAction()
+    {
+	super(tr("Event Add/Edit"), null, tr("Add or edit events related with the node"), null, true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent arg0)
+    {
 	if (!isEnabled())
 	    return;
 
@@ -28,20 +30,24 @@ public class EventPresetEditAction extends JosmAction {
 
 	Collection<Node> nodes = getCurrentDataSet().getSelectedNodes();
 	Collection<Way> ways = getCurrentDataSet().getSelectedWays();
-	if (nodes.size() + ways.size() != 1) {
+	if (nodes.size() + ways.size() != 1)
+	{
 	    System.out.println("Multiple primites selected");
 	    return;
 	}
 
 	OsmPrimitive sel;
-	if (nodes.size() == 1) {
+	if (nodes.size() == 1)
+	{
 	    sel = nodes.iterator().next();
-	} else {
+	}
+	else
+	{
 	    sel = ways.iterator().next();
 	}
 
 	EventPrimitive primitive = Utils.createEventPrimitive(sel);
-	EventListDialog dialog = new EventListDialog(sel.getKeys());
+	// EventListDialog dialog = new EventListDialog(sel.getKeys());
     }
 
 }
