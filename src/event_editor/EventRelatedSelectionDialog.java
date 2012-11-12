@@ -295,9 +295,13 @@ public class EventRelatedSelectionDialog extends ToggleDialog
 	    if (!listModel.isEmpty())
 	    {
 		String relatedPrimitivesTagValue = implodeRelatedNodes(listModel);
-		String tag = "event:" + EventRelatedSelectionDialog.this.rootEventEntity.getEventId()
-		        + ":related_items";
-		Utils.saveEventPrimitive(EventRelatedSelectionDialog.this.rootPrimitive, tag, relatedPrimitivesTagValue);
+		// String tag = "event:" +
+		// EventRelatedSelectionDialog.this.rootEventEntity.getEventId()
+		// + ":related_items";
+		EventRelatedSelectionDialog.this.rootEventEntity.setRelatedItems(relatedPrimitivesTagValue);
+		Utils.saveEventPrimitive(rootEventPrimitive, rootPrimitive);
+		// Utils.saveEventPrimitive(EventRelatedSelectionDialog.this.rootPrimitive,
+		// tag, relatedPrimitivesTagValue);
 	    }
 
 	    getComponentByName("jcSelectEvent").setEnabled(true);
