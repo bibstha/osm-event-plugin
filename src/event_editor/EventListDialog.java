@@ -3,7 +3,6 @@ package event_editor;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Component;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,9 +11,11 @@ import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -27,9 +28,8 @@ public class EventListDialog extends ExtendedDialog
     private HashMap<String, Component> componentMap;
     protected EventPrimitive eventPrimitive;
     protected List<EventListener> listeners = new ArrayList<EventListener>();
-    private static final String[] buttonTexts = new String[] { tr("Edit"), tr("Delete"), tr("New"), tr("Save"),
-	    tr("Cancel") };
-    protected JPanel panel = new JPanel(new GridBagLayout());
+    private static final String[] buttonTexts = new String[] { tr("Edit"), tr("Delete"), tr("New"), tr("Save") };
+    protected JPanel panel;
     private String currentAction = null;
     private final List<Integer> eventActualId = new ArrayList<Integer>();
 
@@ -57,7 +57,7 @@ public class EventListDialog extends ExtendedDialog
 	    {
 		return;
 	    }
-	    // Convert from naturla 0,1,2 id to the original event id 0, 2, 5,
+	    // Convert from natural 0,1,2 id to the original event id 0, 2, 5,
 	    // .. etc
 	    Integer selectedNumber = eventActualId.get(eventEntityList.getSelectedIndex());
 	    final EventEntity eventEntity = eventPrimitive.getEventMap().get(selectedNumber);
@@ -104,11 +104,6 @@ public class EventListDialog extends ExtendedDialog
 	    }
 	    setVisible(false);
 	}
-	else if (buttonIndex == 4)
-	{
-	    // Cancel
-	    setVisible(false);
-	}
     }
 
     /**
@@ -116,7 +111,10 @@ public class EventListDialog extends ExtendedDialog
      */
     protected void loadUI()
     {
-	final JCheckBox chkboxIsEvent = new JCheckBox("Is Event");
+	SpringLayout layout = new SpringLayout();
+	panel = new JPanel(layout);
+
+	final JCheckBox chkboxIsEvent = new JCheckBox("Mark as Event");
 	chkboxIsEvent.setName("isevent");
 	chkboxIsEvent.setSelected(eventPrimitive.isEvent());
 	chkboxIsEvent.addChangeListener(new ChangeListener()
@@ -128,14 +126,29 @@ public class EventListDialog extends ExtendedDialog
 	    }
 	});
 
+	JLabel jlEventList = new JLabel();
+	jlEventList.setName("eventlistlabel");
+
 	DefaultListModel<String> listModel = new DefaultListModel<String>();
 	final JList<String> eventEntityList = new JList<String>(listModel);
 	loadEventEntityList(eventEntityList);
 	eventEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	eventEntityList.setName("entitylist");
 
+	if (listModel.size() > 0)
+	{
+	    jlEventList.setText("Select an Event below");
+	}
+	else
+	{
+	    jlEventList.setText("Create a new Event");
+	}
+
 	panel.add(chkboxIsEvent);
+	panel.add(jlEventList);
 	panel.add(eventEntityList);
+
+	SpringUtilities.makeCompactGrid(panel, 3, 1, 6, 6, 6, 6);
     }
 
     protected void updateUI()

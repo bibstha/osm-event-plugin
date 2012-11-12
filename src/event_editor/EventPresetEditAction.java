@@ -84,6 +84,16 @@ public class EventPresetEditAction extends JosmAction
     {
 	if (lastAction == "save")
 	{
+	    OsmPrimitive selClone = null;
+	    if (sel instanceof Way)
+	    {
+		selClone = new Way((Way) sel);
+	    }
+	    else if (sel instanceof Node)
+	    {
+		selClone = new Node((Node) sel);
+	    }
+
 	    if (primitive.isEvent())
 	    {
 		sel.put("event", "yes");
@@ -111,6 +121,10 @@ public class EventPresetEditAction extends JosmAction
 		    saveOsmPrimitive(sel, keyPrefix + "howoften_other", eventMap.get(i).getHowOftenOther());
 		    saveOsmPrimitive(sel, keyPrefix + "comment", eventMap.get(i).getComment());
 		}
+	    }
+	    if (!sel.hasSameTags(selClone))
+	    {
+		sel.setModified(true);
 	    }
 	}
     }
