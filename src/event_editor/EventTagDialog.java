@@ -211,9 +211,47 @@ public class EventTagDialog extends ExtendedDialog
 	catLabel.put("concert", "Concert");
 
 	catMap = new HashMap<String, List<String>>();
-	catMap.put("accident", Arrays.asList("Animal Accident", "Animal Bite", "Assault"));
-	catMap.put("concert",
-	        Arrays.asList("50s / 60s era", "Alternative", "Bluegrass", "Children / Family", "Classical", "Comedy"));
+	catMap.put("accident", Arrays.asList("Animal Accidents", "Animal Bite", "Assaults", "Bicycle", "Boat/Ship",
+	        "Bus", "Car", "Clinical Negligence", "Criminal", "Factory", "Falls", "Food Poisoning", "Horse",
+	        "Industrial", "Medical Negligence", "Plane", "Public Liability", "Slips/Trips", "Snow", "Sports",
+	        "Taxi", "Train", "Tram", "Water", "Work", "Other"));
+	catMap.put("concert", Arrays.asList("50s / 60s era", "Alternative", "Bluegrass", "Children / Family",
+	        "Classical", "Comedy", "Country / Folk", "Festival Tour", "Hard Rock / Metal", "Holiday",
+	        "Jazz / Blues", "Las Vegas Shows", "Latin", "New Age", "Pop / Rock", "RnB / Soul", "Rap / Hip Hop",
+	        "Reggae/Reggaeton", "Religious", "Techno / Electronic", "World", "Other"));
+	catMap.put("conference", Arrays.asList("Academic", "Businees", "Cultural", "Diplomatic", "Environmental",
+	        "International", "Legal", "Medical", "Peace", "Political", "Science Fiction", "Technology", "Youth",
+	        "Other"));
+	catMap.put("construction", Arrays.asList("Apartments", "Condominiums", "Cottages", "Houses", "Residential",
+	        "Single Unit Dwellings", "Townhouses", "Clinics", "Commercial", "Hotels", "Hospitals", "Schools",
+	        "Institutional", "Light Manufacturing Plants", "Retail Chain Stores", "Shopping Centres",
+	        "Sports Facilities", "Stadiums", "Universities", "Warehouses", "Skyscrapers",
+	        "Chemical Processing Plants", "Industrial", "Manufacturing", "Medicine", "Nuclear power plants",
+	        "Power Generation", "Petroleum", "Steel Mills", "Oil Refineries", "Highway", "Roads", "Stations",
+	        "Streets", "Alleys", "Runways", "Paths", "Prking", "Water", "Sewer Line", "Dams",
+	        "Sewage Treatment Plants/Facilities", "Flood Control", "Dredging", "Water Treatment Plants/Facilities"));
+	catMap.put("educational", Arrays.asList("Debates", "Lectures", "Philosophical Lectures", "Symposia", "Other"));
+	catMap.put("exhibition", Arrays.asList("Air", "Art", "Auto", "Boat", "Book", "Children", "Cloth", "Computer",
+	        "Food", "Horticultural", "Motorcycle", "Oil"));
+	catMap.put("natural", Arrays.asList("Avalanche", "Blizzard", "Cyclonic storm", "Drought", "Earthquake",
+	        "Flood", "Hailstorm", "Heat wave", "Hurricane", "Landslide", "Limnic eruptions", "Tornadoe", "Tsunami",
+	        "Volcanic eruption", "Wildfire", "Other"));
+	catMap.put("political", Arrays.asList("Conferences", "Debate", "Election", "Party", "Protest", "Meeting",
+	        "Rally", "Riot", "Seminar", "Other"));
+	catMap.put("social", Arrays.asList("Art", "Carnival", "Ceremonies", "Circus", "Costume", "Fairs / Festivals",
+	        "Film", "Food/Wine", "Meeting", "Networking", "Open Day", "Open Music", "Outdoor", "Parade", "Party",
+	        "Show", "Magic Shows", "Religious", "Unconferences", "Other"));
+	catMap.put("sport", Arrays.asList("Archery", "Athletics", "Badminton", "Basketball", "Boxing",
+	        "Canoe kayak Slalom", "Canoe kayak Sprint", "Cycling BMX", "Cycling Road", "Cycling Track",
+	        "Mountain Bike", "Diving", "Swimming", "Synchronized Swimming", "Water polo", "Equestrian Dressage",
+	        "Equestrian Eventing", "Equestrian Jumping", "Fencing", "Football", "Golf", "Artistic Gymnastics",
+	        "Rhythmic Gymnastics", "Trampoline", "Handball", "Hockey", "Judo", "Modern pentathlon", "Rowing",
+	        "Rugby", "Sailing", "Shooting", "Table tennis", "Taekwondo", "Tennis", "Triathlon", "Beach volleyball",
+	        "Volleyball", "Weightlifting", "Greco-Roman Wrestling", "Freestyle Wrestling", "Biathlon", "Bobsleigh",
+	        "Bobsleigh Skeleton", "Curling", "Ice Hockey", "Luge", "Figure skating", "Short Track Speed Skating",
+	        "Speed Skating", "Alpine Skiing", "Cross Country Skiing", "Freestyle Skiing", "Nordic Combined Skiing",
+	        "Ski Jumping", "Snowboard", "Other"));
+	catMap.put("traffic", Arrays.asList("Closure", "Pattern", "Other"));
 
 	// Accident, Concert, Conference, Construction, Educational,
 	// Exhibition, Natural, Political, Social, Sport, Traffic, Other

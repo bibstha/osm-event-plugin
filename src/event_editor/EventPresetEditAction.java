@@ -99,19 +99,28 @@ public class EventPresetEditAction extends JosmAction
 		for (Integer i : eventMap.keySet())
 		{
 		    String keyPrefix = "event:" + i + ":";
-		    sel.put(keyPrefix + "name", eventMap.get(i).getName());
-		    sel.put(keyPrefix + "category", eventMap.get(i).getCategory());
-		    sel.put(keyPrefix + "subcategory", eventMap.get(i).getSubCategory());
-		    sel.put(keyPrefix + "organization", eventMap.get(i).getOrganization());
-		    sel.put(keyPrefix + "startdate", eventMap.get(i).getStartDate());
-		    sel.put(keyPrefix + "enddate", eventMap.get(i).getEndDate());
-		    sel.put(keyPrefix + "url", eventMap.get(i).getUrl());
-		    sel.put(keyPrefix + "num_participants", eventMap.get(i).getNumOfParticipants());
-		    sel.put(keyPrefix + "howoften", eventMap.get(i).getHowOften());
-		    sel.put(keyPrefix + "howoften_other", eventMap.get(i).getHowOftenOther());
-		    sel.put(keyPrefix + "comment", eventMap.get(i).getComment());
+		    saveOsmPrimitive(sel, keyPrefix + "name", eventMap.get(i).getName());
+		    saveOsmPrimitive(sel, keyPrefix + "category", eventMap.get(i).getCategory());
+		    saveOsmPrimitive(sel, keyPrefix + "subcategory", eventMap.get(i).getSubCategory());
+		    saveOsmPrimitive(sel, keyPrefix + "organization", eventMap.get(i).getOrganization());
+		    saveOsmPrimitive(sel, keyPrefix + "startdate", eventMap.get(i).getStartDate());
+		    saveOsmPrimitive(sel, keyPrefix + "enddate", eventMap.get(i).getEndDate());
+		    saveOsmPrimitive(sel, keyPrefix + "url", eventMap.get(i).getUrl());
+		    saveOsmPrimitive(sel, keyPrefix + "num_participants", eventMap.get(i).getNumOfParticipants());
+		    saveOsmPrimitive(sel, keyPrefix + "howoften", eventMap.get(i).getHowOften());
+		    saveOsmPrimitive(sel, keyPrefix + "howoften_other", eventMap.get(i).getHowOftenOther());
+		    saveOsmPrimitive(sel, keyPrefix + "comment", eventMap.get(i).getComment());
 		}
 	    }
 	}
+    }
+
+    private void saveOsmPrimitive(OsmPrimitive sel, String tag, String value)
+    {
+	if (value != null && value.equals(""))
+	{
+	    value = null;
+	}
+	sel.put(tag, value);
     }
 }
