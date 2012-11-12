@@ -14,6 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
@@ -143,10 +144,12 @@ public class EventListDialog extends ExtendedDialog
 	{
 	    jlEventList.setText("Create a new Event");
 	}
+	JScrollPane scrollPane = new JScrollPane(eventEntityList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+	        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 	panel.add(chkboxIsEvent);
 	panel.add(jlEventList);
-	panel.add(eventEntityList);
+	panel.add(scrollPane);
 
 	SpringUtilities.makeCompactGrid(panel, 3, 1, 6, 6, 6, 6);
     }
@@ -247,7 +250,15 @@ public class EventListDialog extends ExtendedDialog
 	Component[] components = panel.getComponents();
 	for (int i = 0; i < components.length; i++)
 	{
-	    componentMap.put(components[i].getName(), components[i]);
+	    if (components[i] instanceof JScrollPane)
+	    {
+		JScrollPane jsp = (JScrollPane) components[i];
+		componentMap.put(jsp.getViewport().getView().getName(), jsp.getViewport().getView());
+	    }
+	    else
+	    {
+		componentMap.put(components[i].getName(), components[i]);
+	    }
 	}
     }
 
