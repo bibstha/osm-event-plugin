@@ -7,7 +7,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.Way;
 
 public class Utils
 {
@@ -48,7 +50,7 @@ public class Utils
 		continue;
 	    }
 
-	    if (selPrimitive.getNextHighestEventNumber() < eventNumber)
+	    if (selPrimitive.getNextHighestEventNumber() <= eventNumber)
 	    {
 		selPrimitive.setHighestEventNumber(eventNumber);
 	    }
@@ -57,6 +59,7 @@ public class Utils
 	    if (eventEntity == null)
 	    {
 		eventEntity = new EventEntity();
+		eventEntity.setEventId(eventNumber);
 		eventMap.put(eventNumber, eventEntity);
 	    }
 
@@ -104,6 +107,10 @@ public class Utils
 	    {
 		eventEntity.setComment(tagValue);
 	    }
+	    else if (eventSpecificTag.equals("related_items"))
+	    {
+		eventEntity.setRelatedItems(tagValue);
+	    }
 	    else
 	    {
 		System.out.println("Utils.java:1: Unknown event tag found :" + eventSpecificTag);
@@ -130,5 +137,61 @@ public class Utils
 	ret.add(eventSpecificTag);
 
 	return ret;
+    }
+
+    public static void saveEventPrimitive(EventPrimitive eventPrimitive, OsmPrimitive osmPrimitive)
+    {
+	OsmPrimitive selClone = null;
+	if (osmPrimitive instanceof Way)
+	{
+	    selClone = new Way((Way) osmPrimitive);
+	}
+	else if (osmPrimitive instanceof Node)
+	{
+	    selClone = new Node((Node) osmPrimitive);
+	}
+
+	if (eventPrimitive.isEvent())
+	{
+	    osmPrimitive.put("event", "yes");
+	}
+	else
+	{
+	    osmPrimitive.put("event", null);
+	}
+
+	Map<Integer, EventEntity> eventMap = eventPrimitive.getEventMap();
+	if (eventMap != null && !eventMap.isEmpty())
+	{
+	    for (Integer i : eventMap.keySet())
+	    {
+		String keyPrefix = "event:" + i + ":";
+		saveEventPrimitive(osmPrimitive, keyPrefix + "name", eventMap.get(i).getName());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "category", eventMap.get(i).getCategory());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "subcategory", eventMap.get(i).getSubCategory());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "organization", eventMap.get(i).getOrganization());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "startdate", eventMap.get(i).getStartDate());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "enddate", eventMap.get(i).getEndDate());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "url", eventMap.get(i).getUrl());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "num_participants", eventMap.get(i).getNumOfParticipants());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "howoften", eventMap.get(i).getHowOften());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "howoften_other", eventMap.get(i).getHowOftenOther());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "comment", eventMap.get(i).getComment());
+		saveEventPrimitive(osmPrimitive, keyPrefix + "related_items", eventMap.get(i).getRelatedItems());
+	    }
+	}
+	if (!osmPrimitive.hasSameTags(selClone))
+	{
+	    osmPrimitive.setModified(true);
+	}
+    }
+
+    public static void saveEventPrimitive(OsmPrimitive sel, String tag, String value)
+    {
+	if (value != null && value.equals(""))
+	{
+	    value = null;
+	}
+	sel.put(tag, value);
     }
 }

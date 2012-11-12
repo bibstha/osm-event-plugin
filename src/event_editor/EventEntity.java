@@ -2,6 +2,8 @@ package event_editor;
 
 public class EventEntity
 {
+    private Integer eventId;
+
     private String category;
     private String subCategory;
     private String name;
@@ -13,8 +15,19 @@ public class EventEntity
     private String howOften;
     private String howOftenOther;
     private String comment;
+    private String relatedItems;
 
     private boolean toBeDeleted = false;
+
+    public Integer getEventId()
+    {
+	return eventId;
+    }
+
+    public void setEventId(Integer eventId)
+    {
+	this.eventId = eventId;
+    }
 
     public String getCategory()
     {
@@ -129,7 +142,9 @@ public class EventEntity
     @Override
     public String toString()
     {
-	return String.format("%s %s %s %s %s", name, organization, category, subCategory, url);
+	// return String.format("%s %s %s %s %s", name, organization, category,
+	// subCategory, url);
+	return String.format("Event : %s", getName());
     }
 
     public boolean isToBeDeleted()
@@ -140,5 +155,16 @@ public class EventEntity
     public void setToBeDeleted(boolean toBeDeleted)
     {
 	this.toBeDeleted = toBeDeleted;
+    }
+
+    public String getRelatedItems()
+    {
+	// TODO Auto-generated method stub
+	return relatedItems;
+    }
+
+    public void setRelatedItems(String relatedItems)
+    {
+	this.relatedItems = relatedItems;
     }
 }

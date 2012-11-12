@@ -52,6 +52,7 @@ public class EventListDialog extends ExtendedDialog
     {
 	if (buttonIndex == 0)
 	{
+	    // Edit Button
 	    JList<String> eventEntityList = (JList<String>) getComponentByName("entitylist");
 	    if (eventEntityList.getSelectedValuesList().isEmpty())
 	    {
@@ -134,7 +135,6 @@ public class EventListDialog extends ExtendedDialog
 	loadEventEntityList(eventEntityList);
 	eventEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	eventEntityList.setName("entitylist");
-
 	if (listModel.size() > 0)
 	{
 	    jlEventList.setText("Select an Event below");
@@ -155,8 +155,6 @@ public class EventListDialog extends ExtendedDialog
     {
 	JList<String> jlList = (JList<String>) getComponentByName("entitylist");
 	loadEventEntityList(jlList);
-
-	pack();
     }
 
     protected void loadEventEntityList(JList<String> list)
