@@ -1,33 +1,57 @@
 package event_editor;
 
-import java.sql.Date;
-import java.util.Map;
-
 public class EventEntity
 {
-    private Map<String, String> categories;
+    private String category;
+    private String subCategory;
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private String organization;
     private String url;
     private String numOfParticipants;
-
-    private enum repeat
-    {
-	YEARLY, BIMONTHLY, WEEKLY, BIWEEKLY, DAILY, ONCE
-    }
-
+    private String howOften;
+    private String howOftenOther;
     private String comment;
 
-    public Map<String, String> getCategories()
+    public String getCategory()
     {
-	return categories;
+	return category;
     }
 
-    public void setCategories(Map<String, String> categories)
+    public void setCategory(String category)
     {
-	this.categories = categories;
+	this.category = category;
+    }
+
+    public String getSubCategory()
+    {
+	return subCategory;
+    }
+
+    public void setSubCategory(String subCategory)
+    {
+	this.subCategory = subCategory;
+    }
+
+    public String getHowOften()
+    {
+	return howOften;
+    }
+
+    public void setHowOften(String howOften)
+    {
+	this.howOften = howOften;
+    }
+
+    public String getHowOftenOther()
+    {
+	return howOftenOther;
+    }
+
+    public void setHowOftenOther(String howOftenOther)
+    {
+	this.howOftenOther = howOftenOther;
     }
 
     public String getName()
@@ -40,22 +64,22 @@ public class EventEntity
 	this.name = name;
     }
 
-    public Date getStartDate()
+    public String getStartDate()
     {
 	return startDate;
     }
 
-    public void setStartDate(Date startDate)
+    public void setStartDate(String startDate)
     {
 	this.startDate = startDate;
     }
 
-    public Date getEndDate()
+    public String getEndDate()
     {
 	return endDate;
     }
 
-    public void setEndDate(Date endDate)
+    public void setEndDate(String endDate)
     {
 	this.endDate = endDate;
     }
@@ -98,5 +122,11 @@ public class EventEntity
     public void setComment(String comment)
     {
 	this.comment = comment;
+    }
+
+    @Override
+    public String toString()
+    {
+	return String.format("%s %s %s %s %s", name, organization, category, subCategory, url);
     }
 }

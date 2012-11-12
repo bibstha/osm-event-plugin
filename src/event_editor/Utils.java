@@ -1,8 +1,8 @@
 package event_editor;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,10 +21,18 @@ public class Utils
 	}
 
 	EventPrimitive selPrimitive = new EventPrimitive();
-	selPrimitive.setIsEvent(true);
-	List<EventEntity> eventList = selPrimitive.getEventList();
+	Map<Integer, EventEntity> eventMap = selPrimitive.getEventMap();
 
 	Set<String> keys = (Set<String>) primitive.keySet();
+	if (keys.contains("event") && primitive.get("event").equals("yes"))
+	{
+	    selPrimitive.setIsEvent(true);
+	}
+	else
+	{
+	    selPrimitive.setIsEvent(false);
+	}
+
 	for (String key : keys)
 	{
 	    Set<Object> eventInfo = Utils.parseEventTag(key);
@@ -40,23 +48,68 @@ public class Utils
 		continue;
 	    }
 
-	    EventEntity eventEntity = eventList.get(eventNumber);
-	    if (null == eventEntity)
+	    if (selPrimitive.getNextHighestEventNumber() < eventNumber)
 	    {
-		eventEntity = new EventEntity();
-		eventList.set(eventNumber, eventEntity);
+		selPrimitive.setHighestEventNumber(eventNumber);
 	    }
 
-	    if (eventSpecificTag == "name")
+	    EventEntity eventEntity = eventMap.get(eventNumber);
+	    if (eventEntity == null)
+	    {
+		eventEntity = new EventEntity();
+		eventMap.put(eventNumber, eventEntity);
+	    }
+
+	    if (eventSpecificTag.equals("name"))
 	    {
 		eventEntity.setName(tagValue);
 	    }
-	    else if (eventSpecificTag == "comment")
+	    else if (eventSpecificTag.equals("category"))
+	    {
+		eventEntity.setCategory(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("subcategory"))
+	    {
+		eventEntity.setSubCategory(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("organization"))
+	    {
+		eventEntity.setOrganization(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("startdate"))
+	    {
+		eventEntity.setStartDate(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("enddate"))
+	    {
+		eventEntity.setEndDate(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("url"))
+	    {
+		eventEntity.setUrl(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("num_participants"))
+	    {
+		eventEntity.setNumOfParticipants(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("howoften"))
+	    {
+		eventEntity.setHowOften(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("howoften_other"))
+	    {
+		eventEntity.setHowOftenOther(tagValue);
+	    }
+	    else if (eventSpecificTag.equals("comment"))
 	    {
 		eventEntity.setComment(tagValue);
 	    }
+	    else
+	    {
+		System.out.println("Utils.java:1: Unknown event tag found :" + eventSpecificTag);
+	    }
 
-	    System.out.println("Saved tag " + key + "for event number : " + eventNumber);
+	    System.out.println("Saved tag " + key + ". Num: " + eventNumber + ", Tag: " + eventSpecificTag);
 	}
 	return selPrimitive;
     }
@@ -72,7 +125,7 @@ public class Utils
 	    eventSpecificTag = matcher.group(2);
 	}
 
-	Set<Object> ret = new HashSet<Object>();
+	Set<Object> ret = new LinkedHashSet<Object>();
 	ret.add(eventNumber);
 	ret.add(eventSpecificTag);
 
