@@ -31,6 +31,7 @@ public class EventListDialog extends ExtendedDialog
 	    tr("Cancel") };
     protected JPanel panel = new JPanel(new GridBagLayout());
     private String currentAction = null;
+    private final List<Integer> eventActualId = new ArrayList<Integer>();
 
     public EventListDialog(EventPrimitive eventPrimitive)
     {
@@ -51,12 +52,14 @@ public class EventListDialog extends ExtendedDialog
     {
 	if (buttonIndex == 0)
 	{
-	    JList<Integer> eventEntityList = (JList<Integer>) getComponentByName("entitylist");
+	    JList<String> eventEntityList = (JList<String>) getComponentByName("entitylist");
 	    if (eventEntityList.getSelectedValuesList().isEmpty())
 	    {
 		return;
 	    }
-	    Integer selectedNumber = eventEntityList.getSelectedValue();
+	    // Convert from naturla 0,1,2 id to the original event id 0, 2, 5,
+	    // .. etc
+	    Integer selectedNumber = eventActualId.get(eventEntityList.getSelectedIndex());
 	    final EventEntity eventEntity = eventPrimitive.getEventMap().get(selectedNumber);
 	    EventTagDialog dlgEventTag = new EventTagDialog(eventEntity);
 	    dlgEventTag.addEventListener(new EventListener()
@@ -81,10 +84,6 @@ public class EventListDialog extends ExtendedDialog
 		}
 	    });
 	    dlgEventTag.showDialog();
-	    if (currentAction == "save")
-	    {
-		// Do nothing, later may be update the display
-	    }
 	}
 	else if (buttonIndex == 1)
 	{
@@ -129,8 +128,8 @@ public class EventListDialog extends ExtendedDialog
 	    }
 	});
 
-	DefaultListModel<Integer> listModel = new DefaultListModel<Integer>();
-	final JList<Integer> eventEntityList = new JList<Integer>(listModel);
+	DefaultListModel<String> listModel = new DefaultListModel<String>();
+	final JList<String> eventEntityList = new JList<String>(listModel);
 	loadEventEntityList(eventEntityList);
 	eventEntityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	eventEntityList.setName("entitylist");
@@ -141,21 +140,34 @@ public class EventListDialog extends ExtendedDialog
 
     protected void updateUI()
     {
-	JList<Integer> jlList = (JList<Integer>) getComponentByName("entitylist");
+	JList<String> jlList = (JList<String>) getComponentByName("entitylist");
 	loadEventEntityList(jlList);
+
+	pack();
     }
 
-    protected void loadEventEntityList(JList<Integer> list)
+    protected void loadEventEntityList(JList<String> list)
     {
-	DefaultListModel<Integer> listModel = (DefaultListModel) list.getModel();
+	DefaultListModel<String> listModel = (DefaultListModel) list.getModel();
 	listModel.clear();
+	eventActualId.clear();
 
 	final Map<Integer, EventEntity> eventMap = eventPrimitive.getEventMap();
 	if (!eventMap.isEmpty())
 	{
 	    for (Integer i : eventMap.keySet())
 	    {
-		listModel.addElement(i);
+		// The ids we have for events could be random, like 0, 2, 5
+		// They are mapped to natural 0,1,2 using evenActualId list
+		eventActualId.add(i);
+		if (eventPrimitive.getEventMap().get(i).isToBeDeleted())
+		{
+		    listModel.addElement("Event to be deleted " + i);
+		}
+		else
+		{
+		    listModel.addElement("Event Number " + i);
+		}
 	    }
 	}
     }
@@ -204,13 +216,18 @@ public class EventListDialog extends ExtendedDialog
 
     private void deleteAction()
     {
-	JList<Integer> eventEntityList = (JList<Integer>) getComponentByName("entitylist");
+	JList<String> eventEntityList = (JList<String>) getComponentByName("entitylist");
 	if (eventEntityList.getSelectedValuesList().isEmpty())
 	{
 	    return;
 	}
-	Integer selectedNumber = eventEntityList.getSelectedValue();
-	eventPrimitive.getEventMap().remove(selectedNumber);
+	Integer selectedNumber = eventActualId.get(eventEntityList.getSelectedIndex());
+	System.out.println("Selected event id : " + selectedNumber);
+	EventEntity blankEventEntity = new EventEntity();
+	blankEventEntity.setToBeDeleted(true);
+	eventPrimitive.getEventMap().put(selectedNumber, blankEventEntity);
+
+	updateUI();
     }
 
     private void createComponentMap()

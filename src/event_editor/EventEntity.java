@@ -14,6 +14,8 @@ public class EventEntity
     private String howOftenOther;
     private String comment;
 
+    private boolean toBeDeleted = false;
+
     public String getCategory()
     {
 	return category;
@@ -128,5 +130,15 @@ public class EventEntity
     public String toString()
     {
 	return String.format("%s %s %s %s %s", name, organization, category, subCategory, url);
+    }
+
+    public boolean isToBeDeleted()
+    {
+	return toBeDeleted;
+    }
+
+    public void setToBeDeleted(boolean toBeDeleted)
+    {
+	this.toBeDeleted = toBeDeleted;
     }
 }
