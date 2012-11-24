@@ -22,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.openstreetmap.josm.data.SelectionChangedListener;
 import org.openstreetmap.josm.data.osm.DataSet;
@@ -64,8 +65,11 @@ public class EventRelatedSelectionDialog extends ToggleDialog
 
 	DataSet.addSelectionListener(getRootClickListener());
 
-	createLayout(panel, true, Arrays.asList(new SideButton[] { new SideButton(new SaveAction()),
-	        new SideButton(new CancelAction()) }));
+	createLayout(
+	        panel,
+	        true,
+	        Arrays.asList(new SideButton[] { new SideButton(new SaveAction()), new SideButton(new DeleteAction()),
+	                new SideButton(new CancelAction()) }));
     }
 
     private void createGUI()
@@ -119,8 +123,10 @@ public class EventRelatedSelectionDialog extends ToggleDialog
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 0;
 	c.gridy = 4;
-	c.weightx = 0.0;
+	c.weightx = 1;
+	c.weighty = 1;
 	c.gridwidth = 1;
+
 	DefaultListModel<String> listModel = new DefaultListModel<String>();
 	JList<String> jlRelatedPrimitives = new JList<String>(listModel);
 	jlRelatedPrimitives.setName("jlRelatedPrimitives");
@@ -336,6 +342,29 @@ public class EventRelatedSelectionDialog extends ToggleDialog
 	}
     }
 
+    private class DeleteAction extends AbstractAction
+    {
+	public DeleteAction()
+	{
+	    super();
+	    putValue(NAME, tr("Delete"));
+	    putValue(SHORT_DESCRIPTION, tr("Delete selected related items"));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0)
+	{
+	    JList<String> jlRelatedPrimitives = (JList<String>) getComponentByName("jlRelatedPrimitives");
+	    DefaultListModel<String> listModel = (DefaultListModel<String>) jlRelatedPrimitives.getModel();
+	    int[] selectedIndices = jlRelatedPrimitives.getSelectedIndices();
+	    // Deletion should be done from last to first.
+	    for (int i = selectedIndices.length - 1; i >= 0; i--)
+	    {
+		listModel.removeElementAt(selectedIndices[i]);
+	    }
+	}
+    }
+
     private void setSelectedAsRelated(Collection<? extends OsmPrimitive> newSelection)
     {
 	if (isEventSelected())
@@ -396,7 +425,15 @@ public class EventRelatedSelectionDialog extends ToggleDialog
 	Component[] components = panel.getComponents();
 	for (int i = 0; i < components.length; i++)
 	{
-	    componentMap.put(components[i].getName(), components[i]);
+	    if (components[i] instanceof JScrollPane)
+	    {
+		JScrollPane jsp = (JScrollPane) components[i];
+		componentMap.put(jsp.getViewport().getView().getName(), jsp.getViewport().getView());
+	    }
+	    else
+	    {
+		componentMap.put(components[i].getName(), components[i]);
+	    }
 	}
     }
 

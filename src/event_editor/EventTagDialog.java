@@ -14,15 +14,19 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
+import org.openstreetmap.josm.gui.widgets.HtmlPanel;
 
 public class EventTagDialog extends ExtendedDialog
 {
+    private static String HELP_URL_STRING = "<a href='http://www.carto-tum.de/'>Events Information</a>";
+
     protected EventEntity eventEntity;
     protected List<EventListener> eventListeners = new ArrayList<EventListener>();
 
@@ -129,7 +133,7 @@ public class EventTagDialog extends ExtendedDialog
 	panel.add(jlOrg);
 	panel.add(jtOrg);
 
-	JLabel jlStartDate = new JLabel(tr("Start Date"), JLabel.TRAILING);
+	JLabel jlStartDate = new JLabel(tr("Start Date in mm/dd/YYYY format"), JLabel.TRAILING);
 	JTextField jtStartDate = new JTextField();
 	jtStartDate.setName("startdate");
 	jtStartDate.setText(eventEntity.getStartDate());
@@ -137,7 +141,7 @@ public class EventTagDialog extends ExtendedDialog
 	panel.add(jlStartDate);
 	panel.add(jtStartDate);
 
-	JLabel jlEndDate = new JLabel(tr("End Date"), JLabel.TRAILING);
+	JLabel jlEndDate = new JLabel(tr("End Date in mm/dd/YYYY format"), JLabel.TRAILING);
 	JTextField jtEndDate = new JTextField();
 	jtEndDate.setName("enddate");
 	jtEndDate.setText(eventEntity.getEndDate());
@@ -150,8 +154,11 @@ public class EventTagDialog extends ExtendedDialog
 	jtLink.setName("link");
 	jtLink.setText(eventEntity.getUrl());
 	jlLink.setLabelFor(jtLink);
+	jtLink.setLineWrap(true);
+	JScrollPane spLink = new JScrollPane(jtLink, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+	        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	panel.add(jlLink);
-	panel.add(jtLink);
+	panel.add(spLink);
 
 	JLabel jlNumParticipants = new JLabel(tr("Number of Participants"), JLabel.TRAILING);
 	final JComboBox<String> jcNumParticipants = new JComboBox<String>();
@@ -195,11 +202,21 @@ public class EventTagDialog extends ExtendedDialog
 	final JTextArea jtComment = new JTextArea(3, 0);
 	jtComment.setName("comment");
 	jtComment.setText(eventEntity.getComment());
+	jtComment.setLineWrap(true);
+	JScrollPane spComment = new JScrollPane(jtComment, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+	        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	panel.add(jlComment);
-	panel.add(jtComment);
+	panel.add(spComment);
+
+	JLabel jlHtmlPanel = new JLabel(tr("Test"));
+	panel.add(jlHtmlPanel);
+
+	HtmlPanel htmlPanel = new HtmlPanel(HELP_URL_STRING);
+	htmlPanel.getEditorPane().addHyperlinkListener(SpringUtilities.getHyperlinkListener());
+	panel.add(htmlPanel);
 
 	// Note the second parameter determines how many rows
-	SpringUtilities.makeCompactGrid(panel, 11, 2, 6, 6, 6, 6);
+	SpringUtilities.makeCompactGrid(panel, 12, 2, 6, 6, 6, 6);
 
 	return panel;
     }
@@ -284,7 +301,15 @@ public class EventTagDialog extends ExtendedDialog
 	Component[] components = panel.getComponents();
 	for (int i = 0; i < components.length; i++)
 	{
-	    componentMap.put(components[i].getName(), components[i]);
+	    if (components[i] instanceof JScrollPane)
+	    {
+		JScrollPane jsp = (JScrollPane) components[i];
+		componentMap.put(jsp.getViewport().getView().getName(), jsp.getViewport().getView());
+	    }
+	    else
+	    {
+		componentMap.put(components[i].getName(), components[i]);
+	    }
 	}
     }
 

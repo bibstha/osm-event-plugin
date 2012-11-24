@@ -33,9 +33,14 @@ package event_editor;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 /**
  * A 1.4 file that provides utility methods for creating form- or grid-style
@@ -233,5 +238,36 @@ public class SpringUtilities
 	SpringLayout.Constraints pCons = layout.getConstraints(parent);
 	pCons.setConstraint(SpringLayout.SOUTH, y);
 	pCons.setConstraint(SpringLayout.EAST, x);
+    }
+
+    public static HyperlinkListener getHyperlinkListener()
+    {
+	return new HyperlinkListener()
+	{
+	    @Override
+	    public void hyperlinkUpdate(HyperlinkEvent e)
+	    {
+		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+		{
+		    if (Desktop.isDesktopSupported())
+		    {
+			try
+			{
+			    Desktop.getDesktop().browse(e.getURL().toURI());
+			}
+			catch (IOException e1)
+			{
+			    // TODO Auto-generated catch block
+			    e1.printStackTrace();
+			}
+			catch (URISyntaxException e1)
+			{
+			    // TODO Auto-generated catch block
+			    e1.printStackTrace();
+			}
+		    }
+		}
+	    }
+	};
     }
 }

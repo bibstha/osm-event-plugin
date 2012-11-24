@@ -17,7 +17,7 @@ public class EventPresetEditAction extends JosmAction
 
     public EventPresetEditAction()
     {
-	super(tr("Event Add/Edit"), null, tr("Add or edit events related with the node"), null, true);
+	super(tr("Event Add/Edit"), "event_icon_14x14", tr("Add or edit events related with the node"), null, true);
     }
 
     @Override
