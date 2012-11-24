@@ -217,7 +217,7 @@ public class EventListDialog extends ExtendedDialog
 	    }
 	});
 	dlgEventTag.showDialog();
-	if (currentAction.equals("save"))
+	if (currentAction != null && currentAction.equals("save"))
 	{
 	    Integer nextEventNumber = eventPrimitive.getNextHighestEventNumber();
 	    eventPrimitive.getEventMap().put(nextEventNumber, eventEntity);
