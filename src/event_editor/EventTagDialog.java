@@ -25,7 +25,7 @@ import org.openstreetmap.josm.gui.widgets.HtmlPanel;
 
 public class EventTagDialog extends ExtendedDialog
 {
-    private static String HELP_URL_STRING = "<a href='http://www.carto-tum.de/'>Events Information</a>";
+    private static String HELP_URL_STRING = "<a href='http://www.carto-tum.de/'>More Information</a>";
 
     protected EventEntity eventEntity;
     protected List<EventListener> eventListeners = new ArrayList<EventListener>();
@@ -208,7 +208,7 @@ public class EventTagDialog extends ExtendedDialog
 	panel.add(jlComment);
 	panel.add(spComment);
 
-	JLabel jlHtmlPanel = new JLabel(tr("Test"));
+	JLabel jlHtmlPanel = new JLabel(tr(""));
 	panel.add(jlHtmlPanel);
 
 	HtmlPanel htmlPanel = new HtmlPanel(HELP_URL_STRING);
