@@ -36,6 +36,7 @@
     <property name="josm" location="../../core/dist/josm-custom.jar"/>
     <property name="plugin.build.dir" value="build"/>
     <property name="plugin.src.dir" value="src"/>
+	<property name="plugin.lib.dir" value="lib"/>
     <!-- this is the directory where the plugin jar is copied to -->
     <property name="plugin.dist.dir" value="../../dist"/>
     <property name="ant.build.javac.target" value="1.7"/>
@@ -56,11 +57,34 @@
     -->
     <target name="compile" depends="init">
         <echo message="compiling sources for  ${plugin.jar} ... "/>
-        <javac srcdir="src" classpath="${josm}" debug="true" destdir="${plugin.build.dir}" includeantruntime="false">
+        <javac srcdir="src" classpath="${josm}" debug="true" destdir="${plugin.build.dir}">
             <compilerarg value="-Xlint:deprecation"/>
             <compilerarg value="-Xlint:unchecked"/>
+        	<classpath>
+        		<pathelement location="${josm}"/>
+                <fileset dir="${plugin.lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+        	</classpath>
         </javac>
     </target>
+	<!-- create a property containing all .jar files, prefix lib/, and seperated with a space -->
+    <pathconvert property="libs.project" pathsep=" ">
+        <mapper>
+            <chainedmapper>
+                <!-- remove absolute path -->
+                <flattenmapper/>
+                <!-- add lib/ prefix -->
+                <globmapper from="*" to="${ant.project.name}/lib/*"/>
+            </chainedmapper>
+        </mapper>
+        <path>
+            <!-- plugin.lib.dir contains all jar files -->
+            <fileset dir="${plugin.lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+    </pathconvert>
     <!--
     **********************************************************
     ** dist - creates the plugin jar
@@ -68,6 +92,9 @@
     -->
     <target name="dist" depends="compile,revision">
         <echo message="creating ${ant.project.name}.jar ... "/>
+    	<copy todir="${plugin.build.dir}/lib">
+            <fileset dir="${plugin.lib.dir}"/>
+        </copy>
         <copy todir="${plugin.build.dir}/resources">
             <fileset dir="resources"/>
         </copy>
@@ -93,7 +120,8 @@
             ************************************************
             -->
             <manifest>
-                <attribute name="Author" value="..."/>
+                <attribute name="Author" value="Bibek Shrestha"/>
+            	<attribute name="Class-Path" value="${libs.project}"/>
                 <attribute name="Plugin-Class" value="event_editor.EventEditorPlugin"/>
                 <attribute name="Plugin-Date" value="${version.entry.commit.date}"/>
                 <attribute name="Plugin-Description" value="..."/>
