@@ -5,8 +5,6 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,7 +14,6 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -137,17 +134,17 @@ public class EventTagDialog extends ExtendedDialog
 		panel.add(jtOrg);
 
 		JLabel jlStartDate = new JLabel(tr("Start Date (dd.MM.yyyy-HH:mm)"), JLabel.TRAILING);
-		final JTextField jtStartDate = new JTextField();
+		final JDateTimePicker jtStartDate = new JDateTimePicker(this);
 		jtStartDate.setName("startdate");
-		jtStartDate.setText(eventEntity.getStartDate());
+		jtStartDate.setDate(eventEntity.getStartDate());
 		jlStartDate.setLabelFor(jtStartDate);
 		panel.add(jlStartDate);
 		panel.add(jtStartDate);
 
 		JLabel jlEndDate = new JLabel(tr("End Date (dd.MM.yyyy-HH:mm)"), JLabel.TRAILING);
-		final JTextField jtEndDate = new JTextField();
+		final JDateTimePicker jtEndDate = new JDateTimePicker(this);
 		jtEndDate.setName("enddate");
-		jtEndDate.setText(eventEntity.getEndDate());
+		jtEndDate.setDate(eventEntity.getEndDate());
 		jlEndDate.setLabelFor(jtEndDate);
 		panel.add(jlEndDate);
 		panel.add(jtEndDate);
@@ -209,106 +206,6 @@ public class EventTagDialog extends ExtendedDialog
 		HtmlPanel htmlPanel = new HtmlPanel(HELP_URL_STRING);
 		htmlPanel.getEditorPane().addHyperlinkListener(SpringUtilities.getHyperlinkListener());
 		panel.add(htmlPanel);
-
-		final JPopupMenu popupStartDate = new JPopupMenu();
-		final JDateTimePicker startDateTimePicker = new JDateTimePicker();
-		popupStartDate.add(startDateTimePicker);
-		startDateTimePicker.setSaveBtnActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
-				jtStartDate.setText(startDateTimePicker.getStringDate());
-				popupStartDate.setVisible(false);
-			}
-		});
-		startDateTimePicker.setCancelBtnActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				popupStartDate.setVisible(false);
-			}
-		});
-
-		jtStartDate.addMouseListener(new MouseListener()
-		{
-			@Override
-			public void mouseReleased(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent arg0)
-			{
-				popupStartDate.show(jtStartDate, arg0.getX(), arg0.getY());
-			}
-		});
-
-		final JPopupMenu popupEndDate = new JPopupMenu();
-		final JDateTimePicker endDateTimePicker = new JDateTimePicker();
-		popupEndDate.add(endDateTimePicker);
-		endDateTimePicker.setSaveBtnActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
-				jtEndDate.setText(endDateTimePicker.getStringDate());
-				popupEndDate.setVisible(false);
-			}
-		});
-		endDateTimePicker.setCancelBtnActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				popupEndDate.setVisible(false);
-			}
-		});
-
-		jtEndDate.addMouseListener(new MouseListener()
-		{
-			@Override
-			public void mouseReleased(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0)
-			{
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent arg0)
-			{
-				popupEndDate.show(jtEndDate, arg0.getX(), arg0.getY());
-			}
-		});
 
 		// Note the second parameter determines how many rows
 		SpringUtilities.makeCompactGrid(panel, 10, 2, 6, 6, 6, 6);
@@ -437,6 +334,10 @@ public class EventTagDialog extends ExtendedDialog
 			else if (cmp instanceof JComboBox)
 			{
 				cmpValue = (String) ((JComboBox<String>) cmp).getSelectedItem();
+			}
+			else if (cmp instanceof JDateTimePicker)
+			{
+				cmpValue = ((JDateTimePicker) cmp).getDate();
 			}
 			else
 			{
